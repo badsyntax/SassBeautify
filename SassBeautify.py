@@ -1,7 +1,11 @@
-import commands, subprocess
+# SassBeautify - Beautify your Sass! (or Scss!)
+# https://github.com/badsyntax/SassBeautify
+
+import os, commands, subprocess
 import sublime, sublime_plugin
 
 class SassBeautifyCommand(sublime_plugin.TextCommand):
+
   def run(self, edit):
     self.save()
     self.beautify(edit)
@@ -11,12 +15,20 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
   def beautify(self, edit):
 
-    cmd = ["sass-convert",self.view.file_name(),"-T","scss"]
+    basename, ext = os.path.splitext(self.view.file_name());
+    ext = ext.strip('.');
 
-    if sublime.platform()=='windows':
-      p = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
+    if ext != 'sass' and ext != 'scss':
+      return sublime.error_message('Not a valid Sass file.');
+
+    cmd = [
+      'sass-convert', self.view.file_name(),
+      '-T', ext
+    ]
+
+    if sublime.platform() == 'windows':
+      p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
       html = p.communicate()[0]
-    # TODO: test this works on Linux/OSX
     else:
       html = commands.getoutput('"'+'" "'.join(cmd)+'"')
 

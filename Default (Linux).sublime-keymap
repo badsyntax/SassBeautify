@@ -1,4 +1,4 @@
 [{
-    "keys": ["ctrl+alt+f+s"],
-    "command": "sass_beautify"
+    // "keys": ["ctrl+alt+l"],
+    // "command": "sass_beautify"
 }]
