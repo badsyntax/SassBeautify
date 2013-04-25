@@ -30,14 +30,12 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       sublime.set_timeout(self.save, 100)
 
   def beautify_windows(self, cmd):
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
-    output = p.communicate()[0]
-    exitstatus = 0
-    return exitstatus, output
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output, err = p.communicate()
+    return p.returncode, output or err
 
   def beautify_linux(self, cmd):
-    (exitstatus, output) = commands.getstatusoutput('"'+'" "'.join(cmd)+'"')
-    return exitstatus, output
+    return commands.getstatusoutput('"'+'" "'.join(cmd)+'"')
 
   def beautify(self, edit):
 
@@ -50,9 +48,9 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     cmd = self.generate_cmd(ext)
 
     if sublime.platform() == 'windows':
-      (exitstatus, output) = self.beautify_windows(cmd)
+      exitstatus, output = self.beautify_windows(cmd)
     else:
-      (exitstatus, output) = self.beautify_linux(cmd)
+      exitstatus, output = self.beautify_linux(cmd)
 
     if exitstatus != 0:
       return self.showerror(output);
