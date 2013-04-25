@@ -28,4 +28,4 @@ as expected on your setup.
 
 ## License
 
-Licensed under the MIT license. Created by Richard Willis 
+Licensed under the MIT license. Created by [Richard Willis](http://badsyntax.co/) 
