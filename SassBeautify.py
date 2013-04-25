@@ -1,5 +1,7 @@
-# SassBeautify - Beautify your Sass! (or Scss!)
+# SassBeautify :: Beautify your Sass! (or Scss!)
+# Author: Richard Willis (willis.rh@gmail.com)
 # https://github.com/badsyntax/SassBeautify
+# Depends on the `sass-convert` utility
 
 import os, commands, subprocess
 import sublime, sublime_plugin
@@ -13,6 +15,30 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
   def save(self):
     self.view.run_command("save")
 
+  def showerror(self, message):
+    sublime.error_message('There was an error beautifying your Sass.\n\n' + message);
+
+  def generate_cmd(self, ext):
+    return [
+      'sass-convert', self.view.file_name(),
+      '-T', ext
+    ]
+
+  def update_sass(self, sass, edit):
+    if len(sass) > 0:
+      self.view.replace(edit, sublime.Region(0, self.view.size()), sass.decode('utf-8'))
+      sublime.set_timeout(self.save, 100)
+
+  def beautify_windows(self, cmd):
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    output = p.communicate()[0]
+    exitstatus = 0
+    return exitstatus, output
+
+  def beautify_linux(self, cmd):
+    (exitstatus, output) = commands.getstatusoutput('"'+'" "'.join(cmd)+'"')
+    return exitstatus, output
+
   def beautify(self, edit):
 
     basename, ext = os.path.splitext(self.view.file_name());
@@ -21,20 +47,14 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     if ext != 'sass' and ext != 'scss':
       return sublime.error_message('Not a valid Sass file.');
 
-    cmd = [
-      'sass-convert', self.view.file_name(),
-      '-T', ext
-    ]
+    cmd = self.generate_cmd(ext)
 
     if sublime.platform() == 'windows':
-      p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
-      html = p.communicate()[0]
+      (exitstatus, output) = self.beautify_windows(cmd)
     else:
-      html = commands.getoutput('"'+'" "'.join(cmd)+'"')
+      (exitstatus, output) = self.beautify_linux(cmd)
 
-    if len(html) > 0:
-      self.view.replace(edit, sublime.Region(0, self.view.size()), html.decode('utf-8'))
-      sublime.set_timeout(self.save, 100)
-    # TODO: we should be checking STDERR and display that back to the user instead
-    else:
-      sublime.error_message('There was an error beautifying your Scss. Check for syntax errors.')
+    if exitstatus != 0:
+      return self.showerror(output);
+
+    self.update_sass(output, edit)
