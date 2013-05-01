@@ -16,22 +16,36 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     self.view.run_command("save")
 
   def showerror(self, message):
-    sublime.error_message('There was an error beautifying your Sass.\n\n' + message);
+    sublime.error_message(
+      'There was an error beautifying your Sass.\n\n' + message
+    );
 
   def generate_cmd(self, ext):
     return [
-      'sass-convert', self.view.file_name(),
-      '-T', ext,
-			'--indent', '4'
+      'sass-convert',
+      '--unix-newlines', ''
+      '--indent', '4',
+      '--to', ext,
+      self.view.file_name(),
     ]
 
   def update_sass(self, sass, edit):
     if len(sass) > 0:
-      self.view.replace(edit, sublime.Region(0, self.view.size()), sass.decode('utf-8'))
+      sass = sass.replace('\r\n', '\n') #convert to unix-style newlines
+      self.view.replace(
+        edit,
+        sublime.Region(0, self.view.size()),
+        sass.decode('utf-8')
+      )
       sublime.set_timeout(self.save, 100)
 
   def beautify_windows(self, cmd):
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(
+      cmd,
+      shell=True,
+      stdout=subprocess.PIPE,
+      stderr=subprocess.PIPE
+    )
     output, err = p.communicate()
     return p.returncode, output or err
 
@@ -57,3 +71,4 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       return self.showerror(output);
 
     self.update_sass(output, edit)
+
