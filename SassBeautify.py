@@ -21,7 +21,8 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
   def generate_cmd(self, ext):
     return [
       'sass-convert', self.view.file_name(),
-      '-T', ext
+      '-T', ext,
+			'--indent', '4'
     ]
 
   def update_sass(self, sass, edit):
