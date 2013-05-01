@@ -71,4 +71,3 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       return self.showerror(output);
 
     self.update_sass(output, edit)
-
