@@ -1,1 +1,10 @@
-This is a test installation message
+The SassBeautify package has been successfully installed.
+
+Run the plugin from the command palette:
+
+1. Open the command palette (ctrl + shift + p)
+2. Enter 'SassBeautify'
+
+Please report issues here: https://github.com/badsyntax/SassBeautify/issues
+
+Created by Richard Willis (badsyntax.co)
