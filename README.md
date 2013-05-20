@@ -32,6 +32,8 @@ Run the plugin from the command palette:
 1. Open the command palette (ctrl + shift + p)
 2. Enter 'SassBeautify'
 
+**Note:** Expect the plugin to run slow the first time you run it.
+
 ## Issues
 
 This plugin should work on Linux (tested on Ubuntu), Windows (tested on Windows 7) and OSX (tested on 10.5.7).
