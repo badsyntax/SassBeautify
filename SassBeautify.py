@@ -48,19 +48,22 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
     sublime.status_message('Beautifying, please wait... ')
 
-    text = self.view.substr(sublime.Region(0, self.view.size()))
     cmd = self.generate_cmd(ext)
-    shell = sublime.platform() == 'windows'
 
     p = subprocess.Popen(
       cmd,
-      shell=shell,
-      stdin=subprocess.PIPE,
-      stdout=subprocess.PIPE,
-      stderr=subprocess.PIPE
+      shell  = sublime.platform() == 'windows',
+      stdin  = subprocess.PIPE,
+      stdout = subprocess.PIPE,
+      stderr = subprocess.PIPE
     )
 
-    output, err = p.communicate(input=text)
+    output, err = p.communicate(
+      # sass text to stdin
+      input = self.view.substr(
+        sublime.Region(0, self.view.size())
+      )
+    )
 
     return p.returncode, output, err
 
