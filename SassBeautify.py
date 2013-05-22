@@ -13,16 +13,12 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
   def run(self, edit):
     # A file has to be saved before beautifying so we can get the conversion
     # type from the file extension.
-    self.save();
     if self.view.file_name() == None:
       return sublime.error_message(
         'Please save this file before trying to beautify.'
       );
 
     self.beautify(edit)
-
-  def save(self):
-    self.view.run_command('save')
 
   def generate_cmd(self, ext):
 
@@ -50,6 +46,8 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
   def exec_cmd(self, ext):
 
+    sublime.status_message('Beautifying, please wait... ')
+
     text = self.view.substr(sublime.Region(0, self.view.size()))
     cmd = self.generate_cmd(ext)
     shell = sublime.platform() == 'windows'
@@ -63,6 +61,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     )
 
     output, err = p.communicate(input=text)
+
     return p.returncode, output, err
 
   def update_sass(self, sass, edit):
@@ -82,6 +81,10 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     basename, ext = os.path.splitext(self.view.file_name());
     return ext.strip('.');
 
+  def save(self):
+    self.view.run_command('save')
+    sublime.status_message('Sucessfully beautified ' + self.view.file_name())
+
   def beautify(self, edit):
 
     ext = self.get_ext();
@@ -97,6 +100,4 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       );
 
     self.update_sass(output, edit)
-
     sublime.set_timeout(self.save, 1)
-    sublime.status_message('Sucessfully beautified ' + self.view.file_name())
