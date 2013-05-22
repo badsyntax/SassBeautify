@@ -3,71 +3,100 @@
 # https://github.com/badsyntax/SassBeautify
 # Depends on the `sass-convert` utility
 
-import os, commands, subprocess
-import sublime, sublime_plugin
+import os
+import subprocess
+import sublime
+import sublime_plugin
 
 class SassBeautifyCommand(sublime_plugin.TextCommand):
 
   def run(self, edit):
-    self.save()
+    # A file has to be saved before beautifying so we can get the conversion
+    # type from the file extension.
+    self.save();
+    if self.view.file_name() == None:
+      return sublime.error_message(
+        'Please save this file before trying to beautify.'
+      );
+
     self.beautify(edit)
 
   def save(self):
-    self.view.run_command("save")
-
-  def showerror(self, message):
-    sublime.error_message(
-      'There was an error beautifying your Sass.\n\n' + message
-    );
+    self.view.run_command('save')
 
   def generate_cmd(self, ext):
-    return [
+
+    settings = sublime.load_settings('SassBeautify.sublime-settings')
+
+    cmd = [
       'sass-convert',
-      '--unix-newlines', ''
-      '--indent', '4',
-      '--to', ext,
-      self.view.file_name(),
+      '--unix-newlines',
+      '--stdin',
+      '--indent', str(settings.get('indent')),
+      '--from', ext,
+      '--to', ext
     ]
 
-  def update_sass(self, sass, edit):
-    if len(sass) > 0:
-      sass = sass.replace('\r\n', '\n') #convert to unix-style newlines
-      self.view.replace(
-        edit,
-        sublime.Region(0, self.view.size()),
-        sass.decode('utf-8')
-      )
-      sublime.set_timeout(self.save, 100)
+    # Convert underscores to dashes
+    if settings.get('dasherize') == True:
+      cmd.append('--dasherize')
 
-  def beautify_windows(self, cmd):
+    # Output the old-style ":prop val" property syntax.
+    # Only meaningful when generating Sass
+    if settings.get('old') == True and ext == 'sass':
+      cmd.append('--old')
+
+    return cmd;
+
+  def exec_cmd(self, ext):
+
+    text = self.view.substr(sublime.Region(0, self.view.size()))
+    cmd = self.generate_cmd(ext)
+    shell = sublime.platform() == 'windows'
+
     p = subprocess.Popen(
       cmd,
-      shell=True,
+      shell=shell,
+      stdin=subprocess.PIPE,
       stdout=subprocess.PIPE,
       stderr=subprocess.PIPE
     )
-    output, err = p.communicate()
-    return p.returncode, output or err
 
-  def beautify_linux(self, cmd):
-    return commands.getstatusoutput('"'+'" "'.join(cmd)+'"')
+    output, err = p.communicate(input=text)
+    return p.returncode, output, err
+
+  def update_sass(self, sass, edit):
+
+    # Although we asked sass-convert to give us unix-style newlines, it refuses
+    # to do so when run on windows, so we have to manually convert the
+    # windows-style newlines to unix-style.
+    sass = sass.replace('\r\n', '\n')
+
+    self.view.replace(
+      edit,
+      sublime.Region(0, self.view.size()),
+      sass.decode('utf-8')
+    )
+
+  def get_ext(self):
+    basename, ext = os.path.splitext(self.view.file_name());
+    return ext.strip('.');
 
   def beautify(self, edit):
 
-    basename, ext = os.path.splitext(self.view.file_name());
-    ext = ext.strip('.');
+    ext = self.get_ext();
 
     if ext != 'sass' and ext != 'scss':
       return sublime.error_message('Not a valid Sass file.');
 
-    cmd = self.generate_cmd(ext)
-
-    if sublime.platform() == 'windows':
-      exitstatus, output = self.beautify_windows(cmd)
-    else:
-      exitstatus, output = self.beautify_linux(cmd)
+    exitstatus, output, err = self.exec_cmd(ext)
 
     if exitstatus != 0:
-      return self.showerror(output);
+      return sublime.error_message(
+        'There was an error beautifying your Sass.\n\n' + err
+      );
 
     self.update_sass(output, edit)
+
+    sublime.set_timeout(self.save, 1)
+    sublime.status_message('Sucessfully beautified ' + self.view.file_name())
