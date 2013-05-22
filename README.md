@@ -1,6 +1,6 @@
 # SassBeautify
 
-A basic Sublime Text 2 plugin that beautifies Sass (or Scss) files.
+A Sublime Text 2 plugin that beautifies Sass files.
 
 ## Dependencies
 
@@ -31,8 +31,6 @@ Run the plugin from the command palette:
 
 1. Open the command palette (ctrl + shift + p)
 2. Enter 'SassBeautify'
-
-**Note:** Expect the plugin to run slow the first time you run it.
 
 ## Settings
 
