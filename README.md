@@ -2,6 +2,8 @@
 
 A Sublime Text 2 plugin that beautifies Sass files.
 
+![ScreenShot](https://raw.github.com/badsyntax/SassBeautify/master/screenshot.png)
+
 ## Dependencies
 
 You need to have the 'sass-convert' executable installed on your system to use this plugin.
