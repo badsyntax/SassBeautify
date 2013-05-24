@@ -48,10 +48,18 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
     sublime.status_message('Beautifying, please wait... ')
 
+    settings = sublime.load_settings('SassBeautify.sublime-settings')
+
     cmd = self.generate_cmd(ext)
+
+    # If path is set, modify environment
+    my_env = os.environ.copy()
+    if settings.get('path'):
+      my_env['PATH'] = settings.get('path')
 
     p = subprocess.Popen(
       cmd,
+      env = my_env,
       shell  = sublime.platform() == 'windows',
       stdin  = subprocess.PIPE,
       stdout = subprocess.PIPE,
@@ -86,7 +94,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
   def save(self):
     self.view.run_command('save')
-    sublime.status_message('Sucessfully beautified ' + self.view.file_name())
+    sublime.status_message('Successfully beautified ' + self.view.file_name())
 
   def beautify(self, edit):
 
