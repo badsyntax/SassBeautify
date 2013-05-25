@@ -50,7 +50,8 @@ The following settings can be adjusted:
 {
   "indent": 4,        // How many spaces to use for each level of indentation. "t" means use hard tabs.
   "dasherize": false, // Convert underscores to dashes
-  "old": false        // Output the old-style ":prop val" property syntax. Only meaningful when generating Sass.
+  "old": false,       // Output the old-style ":prop val" property syntax. Only meaningful when generating Sass.
+  "path": false       // Custom path to your sass bin folder (eg: "/home/richard/.rvm/.../gems/sass-3.2.9/bin")
 }
 ```
 
