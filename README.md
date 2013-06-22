@@ -64,7 +64,7 @@ as expected on your setup.
 ## ST3
 
 You can use the experimental '[python3](https://github.com/badsyntax/SassBeautify/tree/python3)' branch 
-to run this package with ST3.
+to run this package with ST3. (See [issue #5](https://github.com/badsyntax/SassBeautify/issues/5).)
 
 ## License
 
