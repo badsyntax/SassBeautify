@@ -61,6 +61,11 @@ This plugin should work on Linux (tested on Ubuntu), Windows (tested on Windows 
 Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if you find it doesn't work
 as expected on your setup.
 
+## ST3
+
+You can use the experimental '[python3](https://github.com/badsyntax/SassBeautify/tree/python3)' branch 
+to run this package with ST3.
+
 ## License
 
 Licensed under the MIT license. Created by [Richard Willis](http://badsyntax.co/)
