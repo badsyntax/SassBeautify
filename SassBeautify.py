@@ -22,6 +22,26 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     self.settings = sublime.load_settings('SassBeautify.sublime-settings')
     self.beautify(edit)
 
+  def beautify(self, edit):
+
+    ext = self.get_ext()
+
+    if ext != 'sass' and ext != 'scss':
+      return sublime.error_message('Not a valid Sass file.')
+
+    try:
+      exitstatus, output, err = self.exec_cmd(ext)
+    except OSError as e:
+      exitstatus, err = 1, str(e) + '\n\nDoes sass-convert exist in PATH?'
+
+    if exitstatus != 0:
+      return sublime.error_message(
+        'There was an error beautifying your Sass:\n\n' + err.decode('utf-8')
+      )
+
+    self.update_sass(output, edit)
+    sublime.set_timeout(self.save, 1)
+
   def generate_cmd(self, ext):
 
     cmd = [
@@ -63,12 +83,16 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       stderr = subprocess.PIPE
     )
 
+    sass = self.view.substr(
+      sublime.Region(0, self.view.size())
+    )
+
     output, err = p.communicate(
       # sass text to stdin
-      input = self.view.substr(
-        sublime.Region(0, self.view.size())
-      )
+      input = sass.encode('utf-8')
     )
+
+    output = output.decode('utf-8')
 
     return p.returncode, output, err
 
@@ -77,12 +101,12 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     # Although we asked sass-convert to give us unix-style newlines, it refuses
     # to do so when run on windows, so we have to manually convert the
     # windows-style newlines to unix-style.
-    sass = sass.replace('\r\n', '\n')
+    sass = '\n'.join(sass.splitlines())
 
     self.view.replace(
       edit,
       sublime.Region(0, self.view.size()),
-      sass.decode('utf-8')
+      sass
     )
 
   def get_ext(self):
@@ -92,23 +116,3 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
   def save(self):
     self.view.run_command('save')
     sublime.status_message('Successfully beautified ' + self.view.file_name())
-
-  def beautify(self, edit):
-
-    ext = self.get_ext()
-
-    if ext != 'sass' and ext != 'scss':
-      return sublime.error_message('Not a valid Sass file.')
-
-    try:
-      exitstatus, output, err = self.exec_cmd(ext)
-    except OSError, e:
-      exitstatus, err = 1, str(e) + '\n\nDoes sass-convert exist in PATH?'
-
-    if exitstatus != 0:
-      return sublime.error_message(
-        'There was an error beautifying your Sass:\n\n' + err
-      )
-
-    self.update_sass(output, edit)
-    sublime.set_timeout(self.save, 1)
