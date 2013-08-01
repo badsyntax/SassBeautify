@@ -1,6 +1,6 @@
 # SassBeautify
 
-A Sublime Text 2 plugin that beautifies Sass files.
+A Sublime Text plugin that beautifies Sass files. (Compatible with Sublime Text 2 & 3.)
 
 ![ScreenShot](https://raw.github.com/badsyntax/SassBeautify/master/screenshot.png)
 
