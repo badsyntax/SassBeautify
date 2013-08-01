@@ -32,11 +32,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     try:
       exitstatus, output, err = self.exec_cmd(ext)
     except OSError as e:
-      exitstatus, err = 1, str(e) + '\n\nDoes sass-convert exist in PATH?'
+      exitstatus, err = 1, str(e) + '\n\nDoes \'sass-convert\' exist in PATH?'
 
     if exitstatus != 0:
       return sublime.error_message(
-        'There was an error beautifying your Sass:\n\n' + err.decode('utf-8')
+        'There was an error beautifying your Sass:\n\n' + err
       )
 
     self.update_sass(output, edit)
@@ -93,6 +93,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     )
 
     output = output.decode('utf-8')
+    err = err.decode('utf-8')
 
     return p.returncode, output, err
 
