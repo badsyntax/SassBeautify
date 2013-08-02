@@ -55,6 +55,11 @@ The following settings can be adjusted:
 }
 ```
 
+## How it works
+
+This plugin is simply a wrapper around the `sass-convert` utility. The `sass-convert `utility will *compile your Sass/Scss
+to Sass/Scss*, and thus there's a chance values might change. (For example, see issue #7.) 
+
 ## Issues
 
 This plugin should work on Linux (tested on Ubuntu), Windows (tested on Windows 7) and OSX (tested on 10.5.7).
