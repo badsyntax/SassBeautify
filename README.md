@@ -58,7 +58,7 @@ The following settings can be adjusted:
 ## How it works
 
 This plugin is simply a wrapper around the `sass-convert` utility. The `sass-convert `utility will *compile your Sass/Scss
-to Sass/Scss*, and thus there's a chance values might change. (For example, see issue #7.) 
+to Sass/Scss*, and thus there's a chance values might change. (For example, see [issue #7](https://github.com/badsyntax/SassBeautify/issues/7).) 
 
 ## Issues
 
