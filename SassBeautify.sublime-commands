@@ -1,6 +1,6 @@
 [
-	{
-		"caption": "SassBeautify",
-		"command": "sass_beautify"
-	}
+    {
+        "caption": "SassBeautify",
+        "command": "sass_beautify"
+    }
 ]
