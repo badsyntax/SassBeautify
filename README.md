@@ -62,7 +62,7 @@ to Sass/Scss*, and thus there's a chance values might change. (For example, see 
 
 ## Issues
 
-This plugin should work on Linux (tested on Ubuntu), Windows (tested on Windows 7) and OSX (tested on 10.5.7).
+This plugin should work on Linux (tested on Ubuntu 12.04), Windows (tested on Windows 7) and OSX (tested on 10.5.7).
 Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if you find it doesn't work
 as expected on your setup.
 
