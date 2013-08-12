@@ -40,7 +40,7 @@ Once installed, you can customize how the conversion works by changing the packa
 
 1. Open the default settings from the preferences menu: `Preferences >> Package Settings >> SassBeautify >> Settings - Default`
 2. Copy the settings and paste them into your user settings file: `Preferences >> Package Settings >> SassBeautify >> Settings - User`
-3. Change the settings!
+3. Change the user settings.
 
 ### Settings overview
 
