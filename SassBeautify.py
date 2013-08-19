@@ -50,7 +50,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       )
 
     self.update(output, edit)
-    sublime.set_timeout(self.save)
+    sublime.set_timeout(self.save, 1)
 
   def exec_cmd(self):
 
