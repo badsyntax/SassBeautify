@@ -2,5 +2,21 @@
 	{
 		"caption": "SassBeautify",
 		"command": "sass_beautify"
-	}
+	},
+    {
+        "caption": "SassBeautify: Convert to SCSS",
+        "command": "sass_beautify",
+        "args": {
+            "action": "convert",
+            "type": "scss"
+        }
+    },
+    {
+        "caption": "SassBeautify: Convert to SASS",
+        "command": "sass_beautify",
+        "args": {
+            "action": "convert",
+            "type": "sass"
+        }
+    }
 ]

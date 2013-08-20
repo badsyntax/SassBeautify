@@ -17,8 +17,10 @@ __credits__   = ["scotthovestadt"]
 
 class SassBeautifyCommand(sublime_plugin.TextCommand):
 
-  def run(self, edit):
+  def run(self, edit, action='beautify', type=None):
 
+    self.action = action
+    self.type = type
     self.settings = sublime.load_settings('SassBeautify.sublime-settings')
 
     if self.check_file() != False:
@@ -32,10 +34,15 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       sublime.error_message('Please save this file before trying to beautify.')
       return False
 
-    # A file needs to have an extension of either .sass or .scss.
-    if self.get_ext() not in ['sass', 'scss']:
-      sublime.error_message('Not a valid Sass file.')
-      return False
+    # Check the file has the correct extension before beautifying (or converting).
+    if self.action == 'beautify':
+      if self.get_ext() not in ['sass', 'scss']:
+        sublime.error_message('Not a valid Sass file.')
+        return False
+    else:
+      if self.get_ext() not in ['sass', 'scss', 'css' ]:
+        sublime.error_message('Not a valid Sass or CSS file.')
+        return False
 
   def beautify(self, edit):
 
@@ -93,7 +100,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       '--stdin',
       '--indent', str(self.settings.get('indent')),
       '--from', ext,
-      '--to', ext
+      '--to', ext if self.action == 'beautify' else self.type
     ]
 
     # Convert underscores to dashes
