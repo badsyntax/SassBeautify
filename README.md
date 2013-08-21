@@ -49,9 +49,9 @@ Run the conversion commands from the command palette:
 1. Open the command palette (ctrl + shift + p)
 2. Type 'SassBeautify'
 3. Choose one of the following options:
-  1. Convert from CSS to current type
-  2. Convert from SCSS to current type
-  3. Convert from SASS to current type
+  * Convert from CSS to current type
+  * Convert from SCSS to current type
+  * Convert from SASS to current type
 
 ## Settings
 
