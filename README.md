@@ -4,7 +4,7 @@ https://sublime.wbond.net/packages/SassBeautify
 
 A Sublime Text plugin that beautifies Sass files. (Compatible with Sublime Text 2 & 3.)
 
-![ScreenShot](https://raw.github.com/badsyntax/SassBeautify/master/screenshot.png)
+![ScreenShot](https://raw.github.com/badsyntax/SassBeautify/master/assets/screenshot.png)
 
 ## Dependencies
 
@@ -31,10 +31,27 @@ Sublime Text 'Packages' directory.
 
 ## Usage
 
+### Default usage
+
 Run the plugin from the command palette:
 
 1. Open the command palette (ctrl + shift + p)
 2. Enter 'SassBeautify'
+
+### Conversion usage
+
+You can use this plugin to convert from different types. For example, if you create a blank .scss file, then 
+copy in a block of CSS code, you can use this plugin to convert the CSS to SCSS. Note that the entire file 
+will have to be in a certain format for the conversion to work correctly.
+
+Run the conversion commands from the command palette:
+
+1. Open the command palette (ctrl + shift + p)
+2. Type 'SassBeautify'
+3. Choose one of the following options:
+  1. Convert from CSS to current type
+  2. Convert from SCSS to current type
+  3. Convert from SASS to current type
 
 ## Settings
 
