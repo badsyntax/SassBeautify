@@ -1,22 +1,33 @@
 [
 	{
 		"caption": "SassBeautify",
-		"command": "sass_beautify"
+		"command": "sass_beautify",
+		"args": {
+			"action": "beautify"
+		}
 	},
-    {
-        "caption": "SassBeautify: Convert to SCSS",
-        "command": "sass_beautify",
-        "args": {
-            "action": "convert",
-            "type": "scss"
-        }
-    },
-    {
-        "caption": "SassBeautify: Convert to SASS",
-        "command": "sass_beautify",
-        "args": {
-            "action": "convert",
-            "type": "sass"
-        }
-    }
+	{
+		"caption": "SassBeautify: Convert from CSS to current type",
+		"command": "sass_beautify",
+		"args": {
+			"action": "convert",
+			"type": "css"
+		}
+	},
+	{
+		"caption": "SassBeautify: Convert from SCSS to current type",
+		"command": "sass_beautify",
+		"args": {
+			"action": "convert",
+			"type": "scss"
+		}
+	},
+	{
+		"caption": "SassBeautify: Convert from SASS to current type",
+		"command": "sass_beautify",
+		"args": {
+			"action": "convert",
+			"type": "sass"
+		}
+	}
 ]
