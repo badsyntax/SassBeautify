@@ -17,8 +17,8 @@ You need to have the 'sass-convert' executable installed on your system to use t
 
 Install via package control:
 
-1. Ensure you have package control installed, see here: http://wbond.net/sublime_packages/package_control
-2. Install the package: open up the command palette (ctrl + shift + p), execute the following command:
+1. Ensure you have package control installed, see here: https://sublime.wbond.net/installation
+2. Install the package: open up the command palette (ctrl/cmd + shift + p), execute the following command:
 'Package Control: Install Package', then enter 'SassBeautify'
 
 **Option 2**
@@ -35,7 +35,7 @@ Sublime Text 'Packages' directory.
 
 Run the plugin from the command palette:
 
-1. Open the command palette (ctrl + shift + p)
+1. Open the command palette (ctrl/cmd + shift + p)
 2. Enter 'SassBeautify'
 
 ### Conversion usage
@@ -46,7 +46,7 @@ will have to be in the correct format for the conversion to work correctly.
 
 Run the conversion commands from the command palette:
 
-1. Open the command palette (ctrl + shift + p)
+1. Open the command palette (ctrl/cmd + shift + p)
 2. Type 'SassBeautify'
 3. Choose one of the following options:
   * Convert from CSS to current type
