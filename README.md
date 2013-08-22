@@ -31,14 +31,14 @@ Sublime Text 'Packages' directory.
 
 ## Usage
 
-### Default usage
+**Default usage**
 
 Run the plugin from the command palette:
 
 1. Open the command palette (ctrl/cmd + shift + p)
 2. Enter 'SassBeautify'
 
-### Conversion usage
+**Conversion usage**
 
 You can use this plugin to convert from different types. For example, if you create a blank .scss file, then 
 copy in a block of CSS code, you can use this plugin to convert the CSS to SCSS. Note that the entire file 
