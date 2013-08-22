@@ -42,7 +42,7 @@ Run the plugin from the command palette:
 
 You can use this plugin to convert from different types. For example, if you create a blank .scss file, then 
 copy in a block of CSS code, you can use this plugin to convert the CSS to SCSS. Note that the entire file 
-will have to be in a certain format for the conversion to work correctly.
+will have to be in the correct format for the conversion to work correctly.
 
 Run the conversion commands from the command palette:
 
