@@ -1,19 +1,19 @@
-"""
+'''
 SassBeautify - A Sublime Text 2/3 plugin that beautifies sass files.
 https://github.com/badsyntax/SassBeautify
-"""
+'''
 
 import os
 import subprocess
 import sublime
 import sublime_plugin
 
-__version__   = "0.3.0"
-__author__    = "Richard Willis"
-__email__     = "willis.rh@gmail.com"
-__copyright__ = "Copyright 2013, Richard Willis"
-__license__   = "MIT"
-__credits__   = ["scotthovestadt"]
+__version__   = '0.3.0'
+__author__    = 'Richard Willis'
+__email__     = 'willis.rh@gmail.com'
+__copyright__ = 'Copyright 2013, Richard Willis'
+__license__   = 'MIT'
+__credits__   = ['scotthovestadt']
 
 class SassBeautifyCommand(sublime_plugin.TextCommand):
 
@@ -77,7 +77,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       input = self.get_text().encode('utf-8')
     )
 
-    output = output.decode("utf-8")
+    output = output.decode('utf-8')
     err = err.decode('utf-8')
 
     # Ensure we're working with unix-style newlines.
@@ -104,7 +104,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     if self.settings.get('dasherize') == True:
       cmd.append('--dasherize')
 
-    # Output the old-style ":prop val" property syntax.
+    # Output the old-style ':prop val' property syntax.
     # Only meaningful when generating Sass.
     if self.settings.get('old') == True and ext == 'sass':
       cmd.append('--old')
