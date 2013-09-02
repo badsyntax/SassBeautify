@@ -77,10 +77,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       input = self.get_text().encode('utf-8')
     )
 
-    output = output.decode('utf-8')
+    output = output.decode("utf-8")
     err = err.decode('utf-8')
 
     # Ensure we're working with unix-style newlines.
+    # Fixes issue on windows with Sass < v3.2.10.
     output = '\n'.join(output.splitlines())
 
     return process.returncode, output, err
@@ -95,7 +96,8 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       '--stdin',
       '--indent', str(self.settings.get('indent')),
       '--from', ext if self.action == 'beautify' else self.type,
-      '--to', ext
+      '--to', ext,
+      '-E', 'utf-8' # Fixes issue 14
     ]
 
     # Convert underscores to dashes.
@@ -114,7 +116,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     return ext.strip('.')
 
   def get_text(self):
-  	return self.view.substr(sublime.Region(0, self.view.size()))
+    return self.view.substr(sublime.Region(0, self.view.size()))
 
   def update(self, sass, edit):
     self.view.replace(edit, sublime.Region(0, self.view.size()), sass)
