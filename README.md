@@ -8,8 +8,7 @@ A Sublime Text plugin that beautifies Sass files. (Compatible with Sublime Text 
 
 ## Dependencies
 
-You need to have the 'sass-convert' executable installed on your system to use this plugin.
-(If you have Sass installed on your system, then you should have sass-convert.)
+You need to have sass installed. Read the [sass download page](http://sass-lang.com/download.html) to view the installation options.
 
 ## Installation
 
@@ -55,7 +54,7 @@ Run the conversion commands from the command palette:
 
 ## Settings
 
-Once installed, you can customize how the conversion works by changing the package settings.
+Once installed, you can customize how the beautification works by changing the package settings.
 
 1. Open the default settings from the preferences menu: `Preferences >> Package Settings >> SassBeautify >> Settings - Default`
 2. Copy the settings and paste them into your user settings file: `Preferences >> Package Settings >> SassBeautify >> Settings - User`
