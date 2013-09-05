@@ -61,7 +61,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     # If path is set, modify environment. (Issue #1)
     env = os.environ.copy()
     if self.settings.get('path'):
-      env['PATH'] += ';' if is_windows else ':' + self.settings.get('path')
+      env['PATH'] = self.settings.get('path');
 
     process = subprocess.Popen(
       self.generate_cmd(),
