@@ -67,9 +67,9 @@ The following settings can be adjusted:
 ```javascript
 {
   "indent": 4,        // How many spaces to use for each level of indentation. "t" means use hard tabs.
-  "dasherize": false, // Convert underscores to dashes
+  "dasherize": false, // Convert underscores to dashes.
   "old": false,       // Output the old-style ":prop val" property syntax. Only meaningful when generating Sass.
-  "path": false       // Custom path to your sass bin folder (eg: "/home/richard/.rvm/.../gems/sass-3.2.9/bin")
+  "path": false       // Custom environment PATH.
 }
 ```
 
@@ -77,6 +77,19 @@ The following settings can be adjusted:
 
 This plugin is simply a wrapper around the `sass-convert` utility. The `sass-convert `utility will *compile your Sass/Scss
 to Sass/Scss*, and thus there's a chance values might change. (For example, see [issue #7](https://github.com/badsyntax/SassBeautify/issues/7).) 
+
+## Compatibility with RVM 
+
+(This does not apply to Windows users.)
+
+RVM uses a shell login script to modify the environment PATH, so you will need to manually add this path to the package
+settings if you want this plugin to use the same ruby and gem versions. 
+
+To get this plugin to work with RVM, follow the steps below:
+
+1. Open up terminal.
+2. Run the following `echo $PATH`
+3. Copy the entire PATH and add this to the package 'path' setting.
 
 ## Issues
 
