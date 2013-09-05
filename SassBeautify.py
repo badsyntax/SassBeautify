@@ -8,7 +8,7 @@ import subprocess
 import sublime
 import sublime_plugin
 
-__version__   = '0.3.1'
+__version__   = '0.3.2'
 __author__    = 'Richard Willis'
 __email__     = 'willis.rh@gmail.com'
 __copyright__ = 'Copyright 2013, Richard Willis'
