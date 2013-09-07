@@ -96,8 +96,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       '--stdin',
       '--indent', str(self.settings.get('indent')),
       '--from', ext if self.action == 'beautify' else self.type,
-      '--to', ext,
-      '-E', 'utf-8' # Fixes issue 14
+      '--to', ext
     ]
 
     # Convert underscores to dashes.
