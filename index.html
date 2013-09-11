@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Sassbeautify : A Sublime Text plugin that beautifies Sass files." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Sassbeautify</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/badsyntax/SassBeautify">View on GitHub</a>
+
+          <h1 id="project_title">Sassbeautify</h1>
+          <h2 id="project_tagline">A Sublime Text plugin that beautifies Sass files.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/badsyntax/SassBeautify/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/badsyntax/SassBeautify/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="sassbeautify" class="anchor" href="#sassbeautify"><span class="octicon octicon-link"></span></a>SassBeautify</h1>
+
+<p><a href="https://sublime.wbond.net/packages/SassBeautify">https://sublime.wbond.net/packages/SassBeautify</a></p>
+
+<p>A Sublime Text plugin that beautifies Sass files. (Compatible with Sublime Text 2 &amp; 3.)</p>
+
+<p><img src="https://raw.github.com/badsyntax/SassBeautify/master/assets/screenshot.png" alt="ScreenShot"></p>
+
+<h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<p>You need to have sass installed. Read the <a href="http://sass-lang.com/download.html">sass download page</a> to view the installation options.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p><strong>Option 1 (recommended)</strong></p>
+
+<p>Install via package control:</p>
+
+<ol>
+<li>Ensure you have package control installed, see here: <a href="https://sublime.wbond.net/installation">https://sublime.wbond.net/installation</a>
+</li>
+<li>Install the package: open up the command palette (ctrl/cmd + shift + p), execute the following command:
+'Package Control: Install Package', then enter 'SassBeautify'</li>
+</ol><p><strong>Option 2</strong></p>
+
+<p>Manual download:</p>
+
+<ol>
+<li>Download the zip file file here: <a href="https://github.com/badsyntax/SassBeautify/archive/master.zip">https://github.com/badsyntax/SassBeautify/archive/master.zip</a>
+</li>
+<li>Unzip the archive, rename the 'SassBeautify-master' folder to 'SassBeautify' and move it into your
+Sublime Text 'Packages' directory.</li>
+</ol><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p><strong>Default usage</strong></p>
+
+<p>Run the plugin from the command palette:</p>
+
+<ol>
+<li>Open the command palette (ctrl/cmd + shift + p)</li>
+<li>Enter 'SassBeautify'</li>
+</ol><p><strong>Conversion usage</strong></p>
+
+<p>You can use this plugin to convert from different types. For example, if you create a blank .scss file, then 
+copy in a block of CSS code, you can use this plugin to convert the CSS to SCSS. Note that the entire file 
+will have to be in the correct format for the conversion to work correctly.</p>
+
+<p>Run the conversion commands from the command palette:</p>
+
+<ol>
+<li>Open the command palette (ctrl/cmd + shift + p)</li>
+<li>Type 'SassBeautify'</li>
+<li>Choose one of the following options:
+
+<ul>
+<li>Convert from CSS to current type</li>
+<li>Convert from SCSS to current type</li>
+<li>Convert from SASS to current type</li>
+</ul>
+</li>
+</ol><h2>
+<a name="settings" class="anchor" href="#settings"><span class="octicon octicon-link"></span></a>Settings</h2>
+
+<p>Once installed, you can customize how the beautification works by changing the package settings.</p>
+
+<ol>
+<li>Open the default settings from the preferences menu: <code>Preferences &gt;&gt; Package Settings &gt;&gt; SassBeautify &gt;&gt; Settings - Default</code>
+</li>
+<li>Copy the settings and paste them into your user settings file: <code>Preferences &gt;&gt; Package Settings &gt;&gt; SassBeautify &gt;&gt; Settings - User</code>
+</li>
+<li>Change the user settings.</li>
+</ol><h3>
+<a name="settings-overview" class="anchor" href="#settings-overview"><span class="octicon octicon-link"></span></a>Settings overview</h3>
+
+<p>The following settings can be adjusted:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">{</span>
+  <span class="s2">"indent"</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span>        <span class="c1">// How many spaces to use for each level of indentation. "t" means use hard tabs.</span>
+  <span class="s2">"dasherize"</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="c1">// Convert underscores to dashes.</span>
+  <span class="s2">"old"</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>       <span class="c1">// Output the old-style ":prop val" property syntax. Only meaningful when generating Sass.</span>
+  <span class="s2">"path"</span><span class="o">:</span> <span class="kc">false</span>       <span class="c1">// Custom environment PATH.</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How it works</h2>
+
+<p>This plugin is simply a wrapper around the <code>sass-convert</code> utility. The <code>sass-convert</code>utility will <em>compile your Sass/Scss
+to Sass/Scss</em>, and thus there's a chance values might change. (For example, see <a href="https://github.com/badsyntax/SassBeautify/issues/7">issue #7</a>.) </p>
+
+<h2>
+<a name="compatibility-with-rvm" class="anchor" href="#compatibility-with-rvm"><span class="octicon octicon-link"></span></a>Compatibility with RVM</h2>
+
+<p>(This does not apply to Windows users.)</p>
+
+<p>RVM uses a shell login script to modify the environment PATH, so you will need to manually add this path to the package
+settings if you want this plugin to use the same ruby and gem versions. </p>
+
+<p>To get this plugin to work with RVM, follow the steps below:</p>
+
+<ol>
+<li>Open up terminal.</li>
+<li>Run the following <code>echo $PATH</code>
+</li>
+<li>Copy the entire PATH and add this to the package 'path' setting.</li>
+</ol><h2>
+<a name="issues" class="anchor" href="#issues"><span class="octicon octicon-link"></span></a>Issues</h2>
+
+<p>This plugin should work on Linux (tested on Ubuntu 12.04), Windows (tested on Windows 7) and OSX (tested on 10.5.7).
+Please <a href="https://github.com/badsyntax/SassBeautify/issues">create an issue</a> if you find it doesn't work
+as expected on your setup.</p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Licensed under the MIT license. Created by <a href="http://badsyntax.co/">Richard Willis</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Sassbeautify maintained by <a href="https://github.com/badsyntax">badsyntax</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
