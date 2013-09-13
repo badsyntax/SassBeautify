@@ -2,7 +2,6 @@
 SassBeautify - A Sublime Text 2/3 plugin that beautifies sass files.
 https://github.com/badsyntax/SassBeautify
 '''
-
 import sublime
 import sublime_plugin
 import os
@@ -47,7 +46,6 @@ class ExecSassCmd(threading.Thread):
       )
       (self.stdout, self.stderr) = process.communicate(input = self.stdin)
       self.returncode = process.returncode;
-
     except OSError as e:
       self.stderr = str(e)
       self.returncode = 1;
