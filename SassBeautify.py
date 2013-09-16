@@ -68,7 +68,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     self.settings = sublime.load_settings('SassBeautify.sublime-settings')
 
     if self.check_file() != False:
-      self.beautify(edit)
+      self.beautify()
 
   def check_file(self):
     '''
@@ -85,32 +85,44 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
       sublime.error_message('Not a valid Sass file.')
       return False
 
-  def beautify(self, edit):
+  def beautify(self):
     '''
     Run the sass beautify command.
     '''
     # The conversion operation might take a little while on slower
     # machines so we should let the user know something is happening.
     sublime.status_message('Beautifying your sass...')
-    self.exec_cmd(edit)
+    self.exec_cmd()
 
-  def exec_cmd(self, edit):
+  def exec_cmd(self):
     '''
     Execute the threaded sass command.
     '''
     thread = ExecSassCommand(self.get_cmd(), self.get_env(), self.get_text())
     thread.start()
 
-    self.check_thread(thread, edit);
+    self.check_thread(thread);
 
-  def check_thread(self, thread, edit):
+  def check_thread(self, thread, i=0, dir=1):
+
+    # This animates a little activity indicator in the status area
+    # Taken from https://github.com/wbond/sublime_prefixr
+    before = i % 8
+    after = (7) - before
+    if not after:
+        dir = -1
+    if not before:
+        dir = 1
+    i += dir
+    self.view.set_status('sassbeautify', 'SassBeautify [%s=%s]' % (' ' * before, ' ' * after))
 
     if thread.is_alive():
-      return sublime.set_timeout(lambda: self.check_thread(thread, edit), 100)
+      return sublime.set_timeout(lambda: self.check_thread(thread, i, dir), 100)
 
-    self.handle_process(edit, thread.returncode, thread.stdout, thread.stderr);
+    self.view.erase_status('sassbeautify')
+    self.handle_process(thread.returncode, thread.stdout, thread.stderr);
 
-  def handle_process(self, edit, returncode, output, error):
+  def handle_process(self, returncode, output, error):
 
     if type(output) is bytes:
      output = output.decode('utf-8')
