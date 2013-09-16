@@ -15,10 +15,10 @@ __copyright__ = 'Copyright 2013, Richard Willis'
 __license__   = 'MIT'
 __credits__   = ['scotthovestadt']
 
-class ExecSassCmd(threading.Thread):
+class ExecSassCommand(threading.Thread):
   '''
   This is a threaded class that we use for running the sass command in a
-  different thread. We thread the sub-process se we don't lock up the UI.
+  different thread. We thread the sub-process se we don't lockup the UI.
   '''
   def __init__(self, cmd, env, stdin):
 
@@ -50,9 +50,16 @@ class ExecSassCmd(threading.Thread):
       self.stderr = str(e)
       self.returncode = 1;
 
+class ReplaceTextCommand(sublime_plugin.TextCommand):
+  '''
+  A custom ST text command to replace the entire view with new text.
+  '''
+  def run(self, edit, text=None):
+    self.view.replace(edit, sublime.Region(0, self.view.size()), text)
+
 class SassBeautifyCommand(sublime_plugin.TextCommand):
   '''
-  Our main SassBeautify Sublime plugin.
+  Our main SassBeautify ST text command.
   '''
   def run(self, edit, action='beautify', type=None):
 
@@ -80,13 +87,36 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
   def beautify(self, edit):
     '''
-    Run the sass beautify command, update the sublime view and save the file.
+    Run the sass beautify command.
     '''
     # The conversion operation might take a little while on slower
     # machines so we should let the user know something is happening.
     sublime.status_message('Beautifying your sass...')
+    self.exec_cmd(edit)
 
-    (returncode, output, error) = self.exec_cmd()
+  def exec_cmd(self, edit):
+    '''
+    Execute the threaded sass command.
+    '''
+    thread = ExecSassCommand(self.get_cmd(), self.get_env(), self.get_text())
+    thread.start()
+
+    self.check_thread(thread, edit);
+
+  def check_thread(self, thread, edit):
+
+    if thread.is_alive():
+      return sublime.set_timeout(lambda: self.check_thread(thread, edit), 100)
+
+    self.handle_process(edit, thread.returncode, thread.stdout, thread.stderr);
+
+  def handle_process(self, edit, returncode, output, error):
+
+    if type(output) is bytes:
+     output = output.decode('utf-8')
+
+    if type(error) is bytes:
+      error = error.decode('utf-8')
 
     if returncode != 0:
       return sublime.error_message(
@@ -97,28 +127,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     # Fixes issue on windows with Sass < v3.2.10.
     output = '\n'.join(output.splitlines())
 
-    self.update(output, edit)
+    # Update the text in the editor
+    self.view.run_command('replace_text', { 'text': output })
+
+    # Save the file
     sublime.set_timeout(self.save, 1)
-
-  def exec_cmd(self):
-    '''
-    Execute the threaded sass command.
-    '''
-    cmd = ExecSassCmd(
-      self.get_cmd(),
-      self.get_env(),
-      self.get_text().encode('utf-8')
-    )
-    cmd.start()
-    cmd.join()
-
-    if type(cmd.stdout) is bytes:
-       cmd.stdout = cmd.stdout.decode('utf-8')
-
-    if type(cmd.stderr) is bytes:
-       cmd.stderr = cmd.stderr.decode('utf-8')
-
-    return (cmd.returncode, cmd.stdout, cmd.stderr)
 
   def get_cmd(self):
     '''
@@ -169,13 +182,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     '''
     Get the sass text from the Sublime view.
     '''
-    return self.view.substr(sublime.Region(0, self.view.size()))
-
-  def update(self, sass, edit):
-    '''
-    Update the sublime view.
-    '''
-    self.view.replace(edit, sublime.Region(0, self.view.size()), sass)
+    return self.view.substr(sublime.Region(0, self.view.size())).encode('utf-8')
 
   def save(self):
     '''
