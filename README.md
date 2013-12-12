@@ -75,12 +75,14 @@ The following settings can be adjusted:
 
 ## How it works
 
-This plugin is simply a wrapper around the `sass-convert` utility. The `sass-convert `utility will *compile your Sass/Scss
-to Sass/Scss*, and thus there's a chance values might change. (For example, see [issue #7](https://github.com/badsyntax/SassBeautify/issues/7).) 
+This plugin is simply a wrapper around the `sass-convert` utility. The `sass-convert` utility will *compile your Sass/Scss to Sass/Scss*.
 
-## Compatibility with RVM 
+## Issues with ruby, Sass and your PATH
 
-(This does not apply to Windows users.)
+If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), or via an installer like [ruby installer](http://rubyinstaller.org/), then 
+you're likely to encounter issues with running Sass from Sublime Text. The issue boils down to the ruby/sass executable paths not existing in your global environment PATH variable. 
+
+### Compatibility with RVM 
 
 RVM uses a shell login script to modify the environment PATH, so you will need to manually add this path to the package
 settings if you want this plugin to use the same ruby and gem versions. 
@@ -91,11 +93,20 @@ To get this plugin to work with RVM, follow the steps below:
 2. Run the following `echo $PATH`
 3. Copy the entire PATH and add this to the package 'path' setting.
 
+### Compatibility with RubyInstaller
+
+During the install process, there should be an option to add ruby to your environment PATH. Ensure this option is 
+selected. 
+
 ## Issues
 
-This plugin should work on Linux (tested on Ubuntu 12.04), Windows (tested on Windows 7) and OSX (tested on 10.5.7).
+This plugin should work on Linux (tested on Ubuntu 12.04), Windows (tested on Windows 7/8) and OSX (tested on 10.5.7).
 Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if you find it doesn't work
 as expected on your setup.
+
+## Thanks
+
+Thank you to all the people who have tested and reported issues. A special thanks to [@WilliamVercken](https://github.com/WilliamVercken) and [@scotthovestadt](https://github.com/scotthovestadt).
 
 ## License
 
