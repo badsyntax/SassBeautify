@@ -47,8 +47,7 @@ class ExecSassCommand(threading.Thread):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
-            (self.stdout, self.stderr) = process.communicate(
-                input=self.stdin)
+            (self.stdout, self.stderr) = process.communicate(input=self.stdin)
             self.returncode = process.returncode
         except OSError as e:
             self.stderr = str(e)
@@ -88,8 +87,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # A file has to be saved so we can get the conversion type from the
         # file extension.
         if self.view.file_name() == None:
-            sublime.error_message(
-                'Please save this file before trying to beautify.')
+            sublime.error_message('Please save this file before trying to beautify.')
             return False
 
         # Check the file has the correct extension before beautifying.
@@ -111,9 +109,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         Execute the threaded sass command.
         '''
         thread = ExecSassCommand(
-            self.get_cmd(), self.get_env(), self.get_text())
+            self.get_cmd(),
+            self.get_env(),
+            self.get_text()
+        )
         thread.start()
-
         self.check_thread(thread)
 
     def check_thread(self, thread, i=0, dir=1):
@@ -127,8 +127,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         if not before:
             dir = 1
         i += dir
+
         self.view.set_status(
-            'sassbeautify', 'SassBeautify [%s=%s]' % (' ' * before, ' ' * after))
+            'sassbeautify',
+            'SassBeautify [%s=%s]' % (' ' * before, ' ' * after)
+        )
 
         if thread.is_alive():
             return sublime.set_timeout(lambda: self.check_thread(thread, i, dir), 100)
@@ -226,5 +229,4 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         Save the file and show a success message.
         '''
         self.view.run_command('save')
-        sublime.status_message(
-            'Successfully beautified ' + self.view.file_name())
+        sublime.status_message('Successfully beautified ' + self.view.file_name())
