@@ -11,7 +11,7 @@
 		"command": "sass_beautify",
 		"args": {
 			"action": "convert",
-			"type": "css"
+			"convert_from_type": "css"
 		}
 	},
 	{
@@ -19,7 +19,7 @@
 		"command": "sass_beautify",
 		"args": {
 			"action": "convert",
-			"type": "scss"
+			"convert_from_type": "scss"
 		}
 	},
 	{
@@ -27,7 +27,7 @@
 		"command": "sass_beautify",
 		"args": {
 			"action": "convert",
-			"type": "sass"
+			"convert_from_type": "sass"
 		}
 	}
 ]

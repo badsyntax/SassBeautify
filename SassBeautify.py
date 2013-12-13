@@ -71,10 +71,10 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     Our main SassBeautify ST text command.
     '''
 
-    def run(self, edit, action='beautify', type=None):
+    def run(self, edit, action='beautify', convert_from_type=None):
 
         self.action = action
-        self.type = type
+        self.convert_from_type = convert_from_type
         self.settings = sublime.load_settings('SassBeautify.sublime-settings')
 
         if self.check_file() != False:
@@ -93,7 +93,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
             return False
 
         # Check the file has the correct extension before beautifying.
-        if self.get_ext() not in ['sass', 'scss']:
+        if self.get_type() not in ['sass', 'scss']:
             sublime.error_message('Not a valid Sass file.')
             return False
 
@@ -163,15 +163,15 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         '''
         Generate the sass command we'll use to beauitfy the sass.
         '''
-        ext = self.get_ext()
+        filetype = self.get_type()
 
         cmd = [
             'sass-convert',
             '--unix-newlines',
             '--stdin',
             '--indent', str(self.settings.get('indent')),
-            '--from', ext if self.action == 'beautify' else self.type,
-            '--to', ext
+            '--from', filetype if self.action == 'beautify' else self.convert_from_type,
+            '--to', filetype
         ]
 
         # Convert underscores to dashes.
@@ -180,7 +180,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
         # Output the old-style ':prop val' property syntax.
         # Only meaningful when generating Sass.
-        if self.settings.get('old') == True and ext == 'sass':
+        if self.settings.get('old') == True and filetype == 'sass':
             cmd.append('--old')
 
         return cmd
@@ -203,6 +203,17 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         '''
         (basename, ext) = os.path.splitext(self.view.file_name())
         return ext.strip('.')
+
+    def get_type(self):
+        '''
+        Returns the file type.
+        '''
+        filetype = self.get_ext();
+        # Added experimental CSS support with issue #27.
+        # If this is a CSS file, then we're to treat it exactly like a SCSS file.
+        if self.action == 'beautify' and filetype == 'css':
+            filetype = 'scss'
+        return filetype
 
     def get_text(self):
         '''
