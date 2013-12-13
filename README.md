@@ -25,8 +25,7 @@ Install via package control:
 Manual download:
 
 1. Download the zip file file here: https://github.com/badsyntax/SassBeautify/archive/master.zip
-2. Unzip the archive, rename the 'SassBeautify-master' folder to 'SassBeautify' and move it into your
-Sublime Text 'Packages' directory.
+2. Unzip the archive, rename the 'SassBeautify-master' folder to 'SassBeautify' and move it into your Sublime Text 'Packages' directory.
 
 ## Usage
 
@@ -39,9 +38,7 @@ Run the plugin from the command palette:
 
 **Conversion usage**
 
-You can use this plugin to convert from different types. For example, if you create a blank .scss file, then 
-copy in a block of CSS code, you can use this plugin to convert the CSS to SCSS. Note that the entire file 
-will have to be in the correct format for the conversion to work correctly.
+You can use this plugin to convert from different types. For example, if you create a blank .scss file, then copy in a block of CSS code, you can use this plugin to convert the CSS to SCSS. Note that the entire file will have to be in the correct format for the conversion to work correctly.
 
 Run the conversion commands from the command palette:
 
@@ -79,13 +76,11 @@ This plugin is simply a wrapper around the `sass-convert` utility. The `sass-con
 
 ## Issues with ruby, Sass and your PATH
 
-If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), or via an installer like [ruby installer](http://rubyinstaller.org/), then 
-you're likely to encounter issues with running Sass from Sublime Text. The issue boils down to the ruby/sass executable paths not existing in your global environment PATH variable. 
+If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), or via an installer like [ruby installer](http://rubyinstaller.org/), then you're likely to encounter issues with running Sass from Sublime Text. The issue boils down to the ruby/sass executable paths not existing in your global environment PATH variable. 
 
 ### Compatibility with RVM 
 
-RVM uses a shell login script to modify the environment PATH, so you will need to manually add this path to the package
-settings if you want this plugin to use the same ruby and gem versions. 
+RVM uses a shell login script to modify the environment PATH, so you will need to manually add this path to the package settings if you want this plugin to use the same ruby and gem versions. 
 
 To get this plugin to work with RVM, follow the steps below:
 
@@ -95,14 +90,13 @@ To get this plugin to work with RVM, follow the steps below:
 
 ### Compatibility with RubyInstaller
 
-During the install process, there should be an option to add ruby to your environment PATH. Ensure this option is 
-selected. 
+During the install process, there should be an option to add ruby to your environment PATH. Ensure this option is selected. 
 
 ## Issues
 
 This plugin should work on Linux (tested on Ubuntu 12.04), Windows (tested on Windows 7/8) and OSX (tested on 10.5.7).
-Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if you find it doesn't work
-as expected on your setup.
+
+Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if you find it doesn't work as expected on your setup.
 
 ## Thanks
 
