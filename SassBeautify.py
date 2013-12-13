@@ -8,7 +8,7 @@ import os
 import subprocess
 import threading
 
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 __author__ = 'Richard Willis'
 __email__ = 'willis.rh@gmail.com'
 __copyright__ = 'Copyright 2013, Richard Willis'
