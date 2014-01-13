@@ -2,5 +2,6 @@
 	"indent": 4,
 	"dasherize": false,
 	"old": false,
-	"path": false
+	"path": false,
+	"newlineafterbracket": false
 }

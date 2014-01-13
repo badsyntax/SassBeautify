@@ -7,6 +7,7 @@ import sublime_plugin
 import os
 import subprocess
 import threading
+import re
 
 __version__ = '1.0.0'
 __author__ = 'Richard Willis'
@@ -155,6 +156,9 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # Ensure we're working with unix-style newlines.
         # Fixes issue on windows with Sass < v3.2.10.
         output = '\n'.join(output.splitlines())
+
+        if self.settings.get('newlineafterbracket', False):
+            output = re.sub(r'\n\n\n', '\n\n', re.sub(r'(.*)\{', r'\n\1{', output).strip())
 
         # Update the text in the editor
         self.view.run_command('replace_text', {'text': output})
