@@ -3,5 +3,5 @@
 	"dasherize": false,
 	"old": false,
 	"path": false,
-	"newlineafterbracket": false
+	"blanklineBetweenSelectors": false
 }

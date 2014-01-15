@@ -14,7 +14,7 @@ __author__ = 'Richard Willis'
 __email__ = 'willis.rh@gmail.com'
 __copyright__ = 'Copyright 2013, Richard Willis'
 __license__ = 'MIT'
-__credits__ = ['scotthovestadt']
+__credits__ = ['scotthovestadt','WilliamVercken','Napanee']
 
 
 class ExecSassCommand(threading.Thread):
@@ -157,7 +157,8 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # Fixes issue on windows with Sass < v3.2.10.
         output = '\n'.join(output.splitlines())
 
-        if self.settings.get('newlineafterbracket', False):
+        # Insert a blank line between selectors. (Issue #30)
+        if self.get_type() == 'scss' and self.settings.get('blanklineBetweenSelectors', False):
             output = re.sub(r'\n\n\n', '\n\n', re.sub(r'(.*)\{', r'\n\1{', output).strip())
 
         # Update the text in the editor
