@@ -100,9 +100,18 @@ This plugin should work on Linux (tested on Ubuntu 12.04), Windows (tested on Wi
 
 Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if you find it doesn't work as expected on your setup.
 
+### Known issues
+
+* [Hyphens in keyword arguments to mixins are converted to underscores](https://github.com/badsyntax/SassBeautify/issues/31) (fixed in Sass master, awaiting release).
+* [Incorrect handling of inline comments within multiline comments](https://github.com/badsyntax/SassBeautify/issues/24) (fixed in Sass master, awaiting release)
+
 ## Thanks
 
 Thank you to all the people who have tested and reported issues. A special thanks to [@WilliamVercken](https://github.com/WilliamVercken) and [@scotthovestadt](https://github.com/scotthovestadt).
+
+## Bonus
+
+This plugin will also [beautify CSS files](https://github.com/badsyntax/SassBeautify/issues/27)! 
 
 ## License
 
