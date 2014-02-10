@@ -71,6 +71,8 @@ The following settings can be adjusted:
   "old": false,
   // Custom environment PATH.
   "path": false,
+  // Beautify the sass file after saving it?
+  "beautifyOnSave": false,
   // Insert a blank line between selectors (only valid for SCSS files).
   "blanklineBetweenSelectors": false
 }
@@ -111,7 +113,7 @@ Thank you to all the people who have tested and reported issues. A special thank
 
 ## Bonus
 
-This plugin will also [beautify CSS files](https://github.com/badsyntax/SassBeautify/issues/27)! 
+This plugin will also [beautify CSS files](https://github.com/badsyntax/SassBeautify/issues/27)!
 
 ## License
 
