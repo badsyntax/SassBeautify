@@ -88,9 +88,10 @@ RVM/rbenv uses a shell login script (usually added to your ~/.bash_profile) to m
 
 To get this plugin to work with RVM/rbenv, follow the steps below:
 
-1. Open up terminal.
+1. Open up terminal
 2. Run the following `echo $PATH`
-3. Copy the *entire* PATH and add this to the package 'path' setting.
+3. Copy the *entire* PATH and add this to the package 'path' setting
+ * For example: `/Users/richard/.rbenv/shims:/usr/local/opt/ruby/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin`
 
 ### Compatibility with RubyInstaller
 
