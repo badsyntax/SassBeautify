@@ -80,17 +80,17 @@ The following settings can be adjusted:
 
 ## Issues with ruby, Sass and your PATH
 
-If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), or via an installer like [ruby installer](http://rubyinstaller.org/), then you're likely to encounter issues with running Sass from Sublime Text. The issue boils down to the ruby/sass executable paths not existing in your global environment PATH variable.
+If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), [rbenv](https://github.com/sstephenson/rbenv) or via an installer like [ruby installer](http://rubyinstaller.org/), then you're likely to encounter issues with running Sass from Sublime Text. The issue boils down to the ruby/sass executable paths not existing in your global environment PATH variable.
 
-### Compatibility with RVM
+### Compatibility with RVM/rbenv
 
-RVM uses a shell login script to modify the environment PATH, so you will need to manually add this path to the package settings if you want this plugin to use the same ruby and gem versions.
+RVM/rbenv uses a shell login script (usually added to your ~/.bash_profile) to modify the environment PATH, so you will need to manually add this path to the package settings if you want this plugin to use the same ruby and gem versions.
 
-To get this plugin to work with RVM, follow the steps below:
+To get this plugin to work with RVM/rbenv, follow the steps below:
 
 1. Open up terminal.
 2. Run the following `echo $PATH`
-3. Copy the entire PATH and add this to the package 'path' setting.
+3. Copy the *entire* PATH and add this to the package 'path' setting.
 
 ### Compatibility with RubyInstaller
 
