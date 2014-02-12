@@ -14,7 +14,7 @@ __author__ = 'Richard Willis'
 __email__ = 'willis.rh@gmail.com'
 __copyright__ = 'Copyright 2013, Richard Willis'
 __license__ = 'MIT'
-__credits__ = ['scotthovestadt','WilliamVercken','Napanee']
+__credits__ = ['scotthovestadt', 'WilliamVercken', 'Napanee']
 
 
 class ExecSassCommand(threading.Thread):
@@ -64,25 +64,26 @@ class SassBeautifyReplaceTextCommand(sublime_plugin.TextCommand):
     def run(self, edit, text=None):
         self.view.replace(edit, sublime.Region(0, self.view.size()), text)
 
+
 class SassBeautifyEvents(sublime_plugin.EventListener):
 
     '''
     An EventListener class to utilize Sublime's events.
     '''
 
-    def __init__(self):
-        self.settings = sublime.load_settings('SassBeautify.sublime-settings');
-
     def on_post_save(self, view):
         '''
-        After saving the file, optionally beautify it. This is done on_post_save
-        because the beautification is asynchronous.
+        After saving the file, optionally beautify it. This is done
+        on_post_save because the beautification is asynchronous.
         '''
-        beautify_on_save = self.settings.get('beautifyOnSave', False)
+        settings = sublime.load_settings('SassBeautify.sublime-settings')
+        beautify_on_save = settings.get('beautifyOnSave', False)
+
         if not SassBeautifyCommand.saving and beautify_on_save:
             view.run_command('sass_beautify', {
                 'show_errors': False
             })
+
 
 class SassBeautifyCommand(sublime_plugin.TextCommand):
 
@@ -109,7 +110,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         '''
         # A file has to be saved so we can get the conversion type from the
         # file extension.
-        if self.view.file_name() == None:
+        if self.view.file_name() is None:
             self.error_message('Please save this file before trying to beautify.')
             return False
 
@@ -244,7 +245,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         '''
         Returns the file type.
         '''
-        filetype = self.get_ext();
+        filetype = self.get_ext()
         # Added experimental CSS support with issue #27.
         # If this is a CSS file, then we're to treat it exactly like a SCSS file.
         if self.action == 'beautify' and filetype == 'css':
@@ -262,8 +263,10 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         Saves the file and show a success message.
         '''
 
-        SassBeautifyCommand.saving = True;
-        self.view.run_command('save');
-        SassBeautifyCommand.saving = False;
+        # We have to store the state to prevent us getting in an infinite loop
+        # when beautifying on_post_save.
+        SassBeautifyCommand.saving = True
+        self.view.run_command('save')
+        SassBeautifyCommand.saving = False
 
         sublime.status_message('Successfully beautified ' + self.view.file_name())
