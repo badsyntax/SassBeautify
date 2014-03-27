@@ -10,6 +10,8 @@ A Sublime Text plugin that beautifies Sass files. (Compatible with Sublime Text 
 
 As this plugin uses `sass-convert`, you need to have sass installed. Read the [sass download page](http://sass-lang.com/download.html) to view the installation options.
 
+Please always ensure you are using the latest version of Sass.
+
 ## Installation
 
 **Option 1 (recommended)**
@@ -72,9 +74,7 @@ The following settings can be adjusted:
   // Custom environment PATH.
   "path": false,
   // Beautify the sass file after saving it?
-  "beautifyOnSave": false,
-  // Insert a blank line between selectors (only valid for SCSS files).
-  "blanklineBetweenSelectors": false
+  "beautifyOnSave": false
 }
 ```
 
@@ -102,11 +102,6 @@ During the install process, there should be an option to add ruby to your enviro
 This plugin should work on Linux (tested on Ubuntu 12.04), Windows (tested on Windows 7/8) and OSX (tested on 10.5.7).
 
 Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if you find it doesn't work as expected on your setup.
-
-### Known issues
-
-* [Hyphens in keyword arguments to mixins are converted to underscores](https://github.com/badsyntax/SassBeautify/issues/31) (fixed in Sass master, awaiting release).
-* [Incorrect handling of inline comments within multiline comments](https://github.com/badsyntax/SassBeautify/issues/24) (fixed in Sass master, awaiting release)
 
 ## Thanks
 
