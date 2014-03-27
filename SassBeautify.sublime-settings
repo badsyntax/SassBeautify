@@ -3,6 +3,5 @@
 	"dasherize": false,
 	"old": false,
 	"path": false,
-	"beautifyOnSave": false,
-	"blanklineBetweenSelectors": false
+	"beautifyOnSave": false
 }
