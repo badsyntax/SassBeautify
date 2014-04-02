@@ -103,6 +103,10 @@ This plugin should work on Linux (tested on Ubuntu 12.04), Windows (tested on Wi
 
 Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if you find it doesn't work as expected on your setup.
 
+### Known issues:
+
+* Inline comments are not supported, see here: https://github.com/nex3/sass/issues/235
+
 ## Thanks
 
 Thank you to all the people who have tested and reported issues. A special thanks to [@WilliamVercken](https://github.com/WilliamVercken) and [@scotthovestadt](https://github.com/scotthovestadt).
