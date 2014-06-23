@@ -84,6 +84,15 @@ The plugin does not set any default key bindings, thus you will need to specify 
 
 In your keymap file (Preferences >> Key bindings - User), add a custom key binding:
 
+```json
+[
+    {
+        "keys": ["alt+w"],
+        "command": "sass_beautify",
+    }
+]
+```
+
 
 ## Issues with ruby, Sass and your PATH
 
