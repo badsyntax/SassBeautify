@@ -78,6 +78,13 @@ The following settings can be adjusted:
 }
 ```
 
+### Key bindings
+
+The plugin does not set any default key bindings, thus you will need to specify your own.
+
+In your keymap file (Preferences >> Key bindings - User), add a custom key binding:
+
+
 ## Issues with ruby, Sass and your PATH
 
 If you installed ruby and sass via a version manager tool like [RVM](https://rvm.io/), [rbenv](https://github.com/sstephenson/rbenv) or via an installer like [ruby installer](http://rubyinstaller.org/), then you're likely to encounter issues with running Sass from Sublime Text. The issue boils down to the ruby/sass executable paths not existing in your global environment PATH variable.
