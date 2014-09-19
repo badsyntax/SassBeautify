@@ -141,19 +141,13 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         self.check_thread(thread)
 
     def beautify_newlines(self, content):
-
-        def repl1(m):
-            return m.group(1) + '\n'
-
-        def repl2(m):
+        def repl(m):
             return m.group(1) + '\n' + m.group(2)
-        
-        # insert newline after }, but only if it's nested ("top" selector are already separated by newlines)
-        content = re.sub('([ {]+})', repl1, content)
-        
-        # insert newline after semi-colon if the line after defines a selector, to make the selector stand out
-        content = re.sub('(;)(\n.+{)', repl2, content)
-        
+
+        # Insert newline after "}" or ";" if the line after defines a selector
+        # (i.e. contains some characters followed by a "{"),
+        # in order to make the selector more visible and increase readability
+        content = re.sub('(;|})(\n.+{)', repl, content)
         return content
 
     def check_thread(self, thread, i=0, dir=1):
