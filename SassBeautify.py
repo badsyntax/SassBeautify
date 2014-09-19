@@ -140,6 +140,22 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         thread.start()
         self.check_thread(thread)
 
+    def beautify_newlines(self, content):
+
+        def repl1(m):
+            return m.group(1) + '\n'
+
+        def repl2(m):
+            return m.group(1) + '\n' + m.group(2)
+        
+        # insert newline after }, but only if it's nested ("top" selector are already separated by newlines)
+        content = re.sub('([ {]+})', repl1, content)
+        
+        # insert newline after semi-colon if the line after defines a selector, to make the selector stand out
+        content = re.sub('(;)(\n.+{)', repl2, content)
+        
+        return content
+
     def check_thread(self, thread, i=0, dir=1):
         '''
         Checks if the thread is still running.
@@ -185,6 +201,8 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # Ensure we're working with unix-style newlines.
         # Fixes issue on windows with Sass < v3.2.10.
         output = '\n'.join(output.splitlines())
+
+        output = self.beautify_newlines(output)
 
         # Update the text in the editor
         self.view.run_command('sass_beautify_replace_text', {'text': output})
