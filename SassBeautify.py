@@ -92,6 +92,8 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     '''
 
     saving = False
+    viewport_pos = None
+    selection = None
 
     def run(self, edit, action='beautify', convert_from_type=None, show_errors=True):
 
@@ -198,6 +200,9 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
         output = self.beautify_newlines(output)
 
+        self.viewport_pos = self.view.viewport_position()
+        self.selection = self.view.sel()[0]
+
         # Update the text in the editor
         self.view.run_command('sass_beautify_replace_text', {'text': output})
 
@@ -276,5 +281,9 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         SassBeautifyCommand.saving = True
         self.view.run_command('save')
         SassBeautifyCommand.saving = False
+
+        self.view.set_viewport_position(self.viewport_pos, False)
+        self.view.sel().clear()
+        self.view.sel().add(self.selection)
 
         sublime.status_message('Successfully beautified ' + self.view.file_name())
