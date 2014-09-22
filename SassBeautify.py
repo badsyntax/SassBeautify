@@ -147,9 +147,16 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
             return m.group(1) + '\n' + m.group(2)
 
         # Insert newline after "}" or ";" if the line after defines a selector
-        # (i.e. contains some characters followed by a "{"),
+        # (i.e. contains some characters followed by a "{" on the same line),
         # in order to make the selector more visible and increase readability
         content = re.sub('(;|})(\n.+{)', repl, content)
+
+        # Similar to above, except the next line starts a comment block followed by a selector
+        content = re.sub('(;|})(\n\ +/\\*(\n|.)*\\*/\n.+{)', repl, content)
+
+        # Similar to above, except the next line is a commented out line followed by a selector
+        content = re.sub('(;|})(\n\ +//.*\n.+{)', repl, content)
+
         return content
 
     def check_thread(self, thread, i=0, dir=1):
