@@ -145,18 +145,28 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     def beautify_newlines(self, content):
         def repl(m):
             return m.group(1) + '\n' + m.group(2)
+            
+        def restoreLineCommentAtEndOfLine(m):
+            return ' //' + m.group(3);
+            
+        def restoreBlockCommentAtEndOfLines(m):
+            return ' /*' + m.group(3);
 
+        # restore line and block comments at the end of lines that have been pushed to the next line
+        content = re.sub('(\s+)(//---end-of-line-comment---)(.*)', restoreLineCommentAtEndOfLine, content)
+        content = re.sub('(\s+)(/\\*---end-of-line-comment---)(.*)', restoreBlockCommentAtEndOfLines, content)
+            
         # Insert newline after "}" or ";" if the line after defines a selector
         # (i.e. contains some characters followed by a "{" on the same line),
         # in order to make the selector more visible and increase readability
-        content = re.sub('(;|})(\n.+{)', repl, content)
+        content = re.sub('(;.*|}.*)(\n.+{)', repl, content)
 
         # Similar to above, except the next line starts a comment block followed by a selector
-        content = re.sub('(;|})(\n\ +/\\*(\n|.)*\\*/\n.+{)', repl, content)
+        content = re.sub('(;.*|}.*)(\n\ +/\\*(\n|.)*?\\*/\n.+{)', repl, content)
 
         # Similar to above, except the next line is a commented out line followed by a selector
-        content = re.sub('(;|})(\n\ +//.*\n.+{)', repl, content)
-
+        content = re.sub('(;.*|}.*)(\n\ +//.*\n.+{)', repl, content)
+        
         return content
 
     def check_thread(self, thread, i=0, dir=1):
@@ -273,10 +283,25 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         return filetype
 
     def get_text(self):
+
+        def markLineCommentAtEndOfLine(m):
+            return m.group(1) + '//---end-of-line-comment---' + m.group(3)
+        
+        def markBlockCommentAtEndOfLine(m):
+            return m.group(1) + '/*---end-of-line-comment---' + m.group(3)
+        
         '''
         Gets the sass text from the Sublime view.
         '''
-        return self.view.substr(sublime.Region(0, self.view.size())).encode('utf-8')
+        content = self.view.substr(sublime.Region(0, self.view.size()));
+        
+        '''
+        Mark comments at the end of lines so we can move them back to the end of the line after sass-convert has pushed them to a new line below
+        '''
+        content = re.sub('(\S+[ \t]*)(//)(.*)', markLineCommentAtEndOfLine, content)
+        content = re.sub('(\S+[ \t]*)(/\*)(.*\*/)', markBlockCommentAtEndOfLine, content)
+        
+        return content.encode('utf-8')
 
     def save(self):
         '''
