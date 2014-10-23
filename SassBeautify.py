@@ -157,18 +157,18 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # in which case we want to restore the comment. We don't need regexp, so we're using simple string replace.
         content = content.replace('//---end-of-line-comment---', '//')
         content = content.replace('/*---end-of-line-comment---', '/*')
-        
+
         # Insert newline after "}" or ";" if the line after defines a selector
         # (i.e. contains some characters followed by a "{" on the same line),
         # in order to make the selector more visible and increase readability
-        content = re.sub('(;.*|}.*)(\n.+[{,])$', repl, content, flags=re.MULTILINE)
+        content = re.sub(re.compile('(;.*|}.*)(\n.+[{,])$', re.MULTILINE), repl, content)
 
         # Similar to above, except the next line starts a comment block followed by a selector
-        matchCommentBlockRegEx = '/\\*(\\*(?!/)|[^\\*])*\\*/';
-        content = re.sub('(;.*|}.*)(\n +' + matchCommentBlockRegEx + '\n.+[{,])$', repl, content, flags=re.MULTILINE)
+        matchCommentBlockRegEx = '/\\*(\\*(?!/)|[^\\*])*\\*/'
+        content = re.sub(re.compile('(;.*|}.*)(\n +' + matchCommentBlockRegEx + '\n.+[{,])$', re.MULTILINE), repl, content)
 
         # Similar to above, except the next line is a commented out line followed by a selector
-        content = re.sub('(;.*|}.*)(\n +//.*\n.+[{,])$', repl, content, flags=re.MULTILINE)
+        content = re.sub(re.compile('(;.*|}.*)(\n +//.*\n.+[{,])$', re.MULTILINE), repl, content)
 
         return content
 
@@ -293,12 +293,12 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         '''
         Gets the sass text from the Sublime view.
         '''
-        content = self.view.substr(sublime.Region(0, self.view.size()));
+        content = self.view.substr(sublime.Region(0, self.view.size()))
 
         '''
         Mark comments at the end of lines so we can move them back to the end of the line after sass-convert has pushed them to a new line
         '''
-        content = re.sub('([;{}]+[ \t]*)(//|/\\*)(.*)$', markCommentAtEndOfLine, content, flags=re.MULTILINE)
+        content = re.sub(re.compile('([;{}]+[ \t]*)(//|/\\*)(.*)$', re.MULTILINE), markCommentAtEndOfLine, content)
 
         return content.encode('utf-8')
 
