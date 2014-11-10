@@ -142,33 +142,36 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         thread.start()
         self.check_thread(thread)
 
-    def beautify_newlines(self, content):
-        def repl(m):
-            return m.group(1) + '\n' + m.group(2)
-
-        def restoreCommentAtEndOfLine(m):
+    def restore_end_of_line_comments(self, content):
+        def restore(m):
             return ' ' + m.group(2) + m.group(4);
 
-        # restore line and block comments at the end of lines that have been pushed to the next line by sass-convert
-        content = re.sub('(\s+)(//|/\\*)(---end-of-line-comment---)(.*)', restoreCommentAtEndOfLine, content)
+        # Restore line and block comments at the end of lines that have been pushed to the next line by sass-convert
+        content = re.sub('(\s+)(//|/\\*)(---end-of-line-comment---)(.*)', restore, content)
 
-        # cleanup, some // and /* might have gotten ---end-of-line-comment--- added which were not
-        # matched and removed by restoreCommentAtEndOfLine (for instance, // appeared inside a block comment),
+        # Cleanup, some // and /* might have gotten ---end-of-line-comment--- added which were not
+        # matched and removed by regexp (for instance, // appeared inside a block comment),
         # in which case we want to restore the comment. We don't need regexp, so we're using simple string replace.
         content = content.replace('//---end-of-line-comment---', '//')
         content = content.replace('/*---end-of-line-comment---', '/*')
 
-        # Insert newline after "}" or ";" if the line after defines a selector
-        # (i.e. contains some characters followed by a "{" on the same line),
-        # in order to make the selector more visible and increase readability
-        content = re.sub(re.compile('(;.*|}.*)(\n.+[{,])$', re.MULTILINE), repl, content)
+        return content
+
+    def beautify_newlines(self, content):
+        def insert_newline_between_capturing_parentheses(m):
+            return m.group(1) + '\n' + m.group(2)
+
+        # Insert newline after "}" or ";" if the line after defines (or starts to define) a selector
+        # (i.e. contains some characters followed by a "{" or "," on the same line).
+        # This is in order to make the selector more visible and increase readability
+        content = re.sub(re.compile('(;.*|}.*)(\n.+[{,])$', re.MULTILINE), insert_newline_between_capturing_parentheses, content)
 
         # Similar to above, except the next line starts a comment block followed by a selector
         matchCommentBlockRegEx = '/\\*(\\*(?!/)|[^\\*])*\\*/'
-        content = re.sub(re.compile('(;.*|}.*)(\n +' + matchCommentBlockRegEx + '\n.+[{,])$', re.MULTILINE), repl, content)
+        content = re.sub(re.compile('(;.*|}.*)(\n +' + matchCommentBlockRegEx + '\n.+[{,])$', re.MULTILINE), insert_newline_between_capturing_parentheses, content)
 
         # Similar to above, except the next line is a commented out line followed by a selector
-        content = re.sub(re.compile('(;.*|}.*)(\n +//.*\n.+[{,])$', re.MULTILINE), repl, content)
+        content = re.sub(re.compile('(;.*|}.*)(\n +//.*\n.+[{,])$', re.MULTILINE), insert_newline_between_capturing_parentheses, content)
 
         return content
 
@@ -218,6 +221,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # Fixes issue on windows with Sass < v3.2.10.
         output = '\n'.join(output.splitlines())
 
+        output = self.restore_end_of_line_comments(output)
         output = self.beautify_newlines(output)
 
         self.viewport_pos = self.view.viewport_position()
@@ -287,7 +291,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
 
     def get_text(self):
 
-        def markCommentAtEndOfLine(m):
+        def mark_end_of_line_comment(m):
             return m.group(1) + m.group(2) + '---end-of-line-comment---' + m.group(3)
 
         '''
@@ -298,7 +302,7 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         '''
         Mark comments at the end of lines so we can move them back to the end of the line after sass-convert has pushed them to a new line
         '''
-        content = re.sub(re.compile('([;{}]+[ \t]*)(//|/\\*)(.*)$', re.MULTILINE), markCommentAtEndOfLine, content)
+        content = re.sub(re.compile('([;{}]+[ \t]*)(//|/\\*)(.*)$', re.MULTILINE), mark_end_of_line_comment, content)
 
         return content.encode('utf-8')
 
