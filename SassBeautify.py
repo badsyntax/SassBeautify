@@ -221,8 +221,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # Fixes issue on windows with Sass < v3.2.10.
         output = '\n'.join(output.splitlines())
 
-        output = self.restore_end_of_line_comments(output)
-        output = self.beautify_newlines(output)
+        if self.settings.get('inlineComments', False):
+            output = self.restore_end_of_line_comments(output)
+
+        if self.settings.get('newlineBetweenSelectors', False):
+            output = self.beautify_newlines(output)
 
         self.viewport_pos = self.view.viewport_position()
         self.selection = self.view.sel()[0]
@@ -299,10 +302,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         '''
         content = self.view.substr(sublime.Region(0, self.view.size()))
 
-        '''
-        Mark comments at the end of lines so we can move them back to the end of the line after sass-convert has pushed them to a new line
-        '''
-        content = re.sub(re.compile('([;{}]+[ \t]*)(//|/\\*)(.*)$', re.MULTILINE), mark_end_of_line_comment, content)
+        if self.settings.get('inlineComments', False):
+            '''
+            Mark comments at the end of lines so we can move them back to the end of the line after sass-convert has pushed them to a new line
+            '''
+            content = re.sub(re.compile('([;{}]+[ \t]*)(//|/\\*)(.*)$', re.MULTILINE), mark_end_of_line_comment, content)
 
         return content.encode('utf-8')
 
