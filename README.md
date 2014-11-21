@@ -74,7 +74,11 @@ The following settings can be adjusted:
   // Custom environment PATH.
   "path": false,
   // Beautify the sass file after saving it?
-  "beautifyOnSave": false
+  "beautifyOnSave": false,
+  // Keep "inline" comments inline?
+  "inlineComments": false,
+  // Add a new line between selectors?
+  "newlineBetweenSelectors": false
 }
 ```
 
@@ -125,7 +129,13 @@ Please [create an issue](https://github.com/badsyntax/SassBeautify/issues) if yo
 
 ## Thanks
 
-Thank you to all the people who have tested and reported issues. A special thanks to [@WilliamVercken](https://github.com/WilliamVercken) and [@scotthovestadt](https://github.com/scotthovestadt).
+Thank you to all the people who have tested and reported issues, and have sent in contributions.
+
+Special thanks goes to:
+
+* [@strille](https://github.com/strille)
+* [@WilliamVercken](https://github.com/WilliamVercken)
+* [@scotthovestadt](https://github.com/scotthovestadt).
 
 ## Bonus
 

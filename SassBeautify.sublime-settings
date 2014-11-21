@@ -3,5 +3,7 @@
 	"dasherize": false,
 	"old": false,
 	"path": false,
-	"beautifyOnSave": false
+	"beautifyOnSave": false,
+	"inlineComments": false,
+	"newlineBetweenSelectors": false
 }

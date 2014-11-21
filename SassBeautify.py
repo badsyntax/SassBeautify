@@ -92,6 +92,8 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
     '''
 
     saving = False
+    viewport_pos = None
+    selection = None
 
     def run(self, edit, action='beautify', convert_from_type=None, show_errors=True):
 
@@ -140,6 +142,39 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         thread.start()
         self.check_thread(thread)
 
+    def restore_end_of_line_comments(self, content):
+        def restore(m):
+            return ' ' + m.group(2) + m.group(4);
+
+        # Restore line and block comments at the end of lines that have been pushed to the next line by sass-convert
+        content = re.sub('(\s+)(//|/\\*)(---end-of-line-comment---)(.*)', restore, content)
+
+        # Cleanup, some // and /* might have gotten ---end-of-line-comment--- added which were not
+        # matched and removed by regexp (for instance, // appeared inside a block comment),
+        # in which case we want to restore the comment. We don't need regexp, so we're using simple string replace.
+        content = content.replace('//---end-of-line-comment---', '//')
+        content = content.replace('/*---end-of-line-comment---', '/*')
+
+        return content
+
+    def beautify_newlines(self, content):
+        def insert_newline_between_capturing_parentheses(m):
+            return m.group(1) + '\n' + m.group(2)
+
+        # Insert newline after "}" or ";" if the line after defines (or starts to define) a selector
+        # (i.e. contains some characters followed by a "{" or "," on the same line).
+        # This is in order to make the selector more visible and increase readability
+        content = re.sub(re.compile('(;.*|}.*)(\n.+[{,])$', re.MULTILINE), insert_newline_between_capturing_parentheses, content)
+
+        # Similar to above, except the next line starts a comment block followed by a selector
+        matchCommentBlockRegEx = '/\\*(\\*(?!/)|[^\\*])*\\*/'
+        content = re.sub(re.compile('(;.*|}.*)(\n +' + matchCommentBlockRegEx + '\n.+[{,])$', re.MULTILINE), insert_newline_between_capturing_parentheses, content)
+
+        # Similar to above, except the next line is a commented out line followed by a selector
+        content = re.sub(re.compile('(;.*|}.*)(\n +//.*\n.+[{,])$', re.MULTILINE), insert_newline_between_capturing_parentheses, content)
+
+        return content
+
     def check_thread(self, thread, i=0, dir=1):
         '''
         Checks if the thread is still running.
@@ -185,6 +220,15 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         # Ensure we're working with unix-style newlines.
         # Fixes issue on windows with Sass < v3.2.10.
         output = '\n'.join(output.splitlines())
+
+        if self.settings.get('inlineComments', False):
+            output = self.restore_end_of_line_comments(output)
+
+        if self.settings.get('newlineBetweenSelectors', False):
+            output = self.beautify_newlines(output)
+
+        self.viewport_pos = self.view.viewport_position()
+        self.selection = self.view.sel()[0]
 
         # Update the text in the editor
         self.view.run_command('sass_beautify_replace_text', {'text': output})
@@ -249,10 +293,22 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         return filetype
 
     def get_text(self):
+
+        def mark_end_of_line_comment(m):
+            return m.group(1) + m.group(2) + '---end-of-line-comment---' + m.group(3)
+
         '''
         Gets the sass text from the Sublime view.
         '''
-        return self.view.substr(sublime.Region(0, self.view.size())).encode('utf-8')
+        content = self.view.substr(sublime.Region(0, self.view.size()))
+
+        if self.settings.get('inlineComments', False):
+            '''
+            Mark comments at the end of lines so we can move them back to the end of the line after sass-convert has pushed them to a new line
+            '''
+            content = re.sub(re.compile('([;{}]+[ \t]*)(//|/\\*)(.*)$', re.MULTILINE), mark_end_of_line_comment, content)
+
+        return content.encode('utf-8')
 
     def save(self):
         '''
@@ -264,5 +320,9 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         SassBeautifyCommand.saving = True
         self.view.run_command('save')
         SassBeautifyCommand.saving = False
+
+        self.view.set_viewport_position(self.viewport_pos, False)
+        self.view.sel().clear()
+        self.view.sel().add(self.selection)
 
         sublime.status_message('Successfully beautified ' + self.view.file_name())
