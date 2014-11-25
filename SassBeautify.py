@@ -54,7 +54,6 @@ class ExecSassCommand(threading.Thread):
             self.stderr = str(e)
             self.returncode = 1
 
-
 class SassBeautifyReplaceTextCommand(sublime_plugin.TextCommand):
 
     '''
@@ -268,9 +267,11 @@ class SassBeautifyCommand(sublime_plugin.TextCommand):
         '''
         env = os.environ.copy()
 
-        # If path is set, modify environment. (Issue #1)
         if self.settings.get('path', False):
             env['PATH'] = self.settings.get('path')
+
+        if self.settings.get('gemPath', False):
+            env['GEM_PATH'] = self.settings.get('gemPath')
 
         return env
 
