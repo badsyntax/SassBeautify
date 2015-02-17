@@ -92,7 +92,7 @@ In your keymap file (Preferences >> Key bindings - User), add a custom key bindi
 [
     {
         "keys": ["alt+w"],
-        "command": "sass_beautify",
+        "command": "sass_beautify"
     }
 ]
 ```
