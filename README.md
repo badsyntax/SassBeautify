@@ -78,7 +78,9 @@ The following settings can be adjusted:
   // Keep "inline" comments inline?
   "inlineComments": false,
   // Add a new line between selectors?
-  "newlineBetweenSelectors": false
+  "newlineBetweenSelectors": false,
+  // Use single quotes everywhere
+  "useSingleQuotes": false
 }
 ```
 
